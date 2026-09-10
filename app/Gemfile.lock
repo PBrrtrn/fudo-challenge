@@ -1,6 +1,12 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    csv (3.3.6)
+    hanami-router (3.0.0)
+      csv (~> 3.3)
+      mustermann (~> 3.1)
+      rack (>= 2.2.16)
+    mustermann (3.1.1)
     nio4r (2.7.5)
     puma (6.6.1)
       nio4r (~> 2.0)
@@ -10,10 +16,14 @@ PLATFORMS
   x64-mingw-ucrt
 
 DEPENDENCIES
+  hanami-router (~> 3.0)
   puma (~> 6.4)
   rack (~> 3.0)
 
 CHECKSUMS
+  csv (3.3.6) sha256=aba61e7e507a66f03d45cb1f3c4b6359861c3504038b422962875dce099e4456
+  hanami-router (3.0.0) sha256=2438db070c7ed7d3f28f1777fc32bdc86e7a9b744a29ab51098f4fa41408210b
+  mustermann (3.1.1) sha256=4c6170c7234d5499c345562ba7c7dfe73e1754286dcc1abb053064d66a127198
   nio4r (2.7.5) sha256=6c90168e48fb5f8e768419c93abb94ba2b892a1d0602cb06eef16d8b7df1dca1
   puma (6.6.1) sha256=b9b56e4a4ea75d1bfa6d9e1972ee2c9f43d0883f011826d914e8e37b3694ea1e
   rack (3.2.7) sha256=93e13e1c24f93556671d85d2d79fa228c3485815c50d7e2f265b5330c6528fb7
