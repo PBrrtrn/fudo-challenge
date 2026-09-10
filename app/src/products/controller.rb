@@ -7,15 +7,16 @@ class ProductsController
   end
 
   def create(env)
-    puts "Create product"
+    puts "Creating product"
     request = Rack::Request.new env
 
-    if !ProductsValidator.validate(env)
+    if !ProductsValidator.validate(request)
       [400, {}, ["Validation error: Product missing 'name' field"]]
     else
       Thread.new do
         sleep 5
         @repository.push(request.params["name"])
+        puts "Created product"
       end
 
       [202, {}, ["Processing"]]
@@ -23,12 +24,16 @@ class ProductsController
   end
   
   def index(env)
-    puts "Fetching all products"
-    [200, {}, []]
+    products = @repository.get_all
+    [200, {"content-type" => "application/json"}, [products.to_json]]
   end
 
   def show(env)
-    puts "Show one product"
-    [200, {}, []]
+    request = Rack::Request.new env
+
+    product = @repository.get(request.params["id"].to_i)
+    return [404, {"content-type" => "text/plain"}, ["Product not found"]] if product.nil?
+
+    [200, {"content-type" => "application/json"}, [product.to_json]]
   end
 end
