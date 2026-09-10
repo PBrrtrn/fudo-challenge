@@ -1,0 +1,3 @@
+Fudo es un servicio que automatiza procesos de gestión gastronómica. Mediante la plataforma de Fudo, locales gastronómicos pueden llevar adelante el manejo de comandas, envíos y stock, unificando su conocimiento de negocio y digitalizando sus operaciones.
+
+La aplicación de Fudo ofrece módulos interconectados que permiten operar un local gastro como una sola unidad, de modo que el manejo de stock responda y adapte la disponibilidad de productos a los movimientos registrados en módulos como las comandas y el delivery. Además, Fudo ofrece analíticas, para agregar movimientos y conocer el desempeño del negocio.

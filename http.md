@@ -1,0 +1,1 @@
+HTTP es un protocolo de capa de aplicación para el intercambio de mensajes en la forma de hipertexto (texto + enlaces). El protocolo establece conexiones sin estado, exponiendo en su lugar métodos para crear, editar y eliminar recursos, y códigos de estado que informan el resultado de un pedido.

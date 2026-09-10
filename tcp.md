@@ -1,0 +1,1 @@
+TCP es un protocolo de capa de transporte que permite a aplicaciones formar conexiones que intercambien paquetes con garantía de orden, unicidad y recepción. Al aderirse al estándar TCP, protocolos de capa de aplicación pueden delegar en este la responsabilidad del envío íntegro de sus mensajes.
