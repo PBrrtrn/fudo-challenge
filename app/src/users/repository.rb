@@ -1,5 +1,6 @@
 require "bcrypt"
 require "securerandom"
+require "digest"
 
 class UsersRepository
   def initialize
@@ -31,14 +32,14 @@ class UsersRepository
       return nil unless BCrypt::Password.new(user[:password_digest]) == password
 
       token = SecureRandom.hex(32)
-      @sessions[token] = user[:id]
+      @sessions[Digest::SHA256::hexdigest(token)] = user[:id]
       token
     end
   end
 
   def find_by_session_token(token)
     @mutex.synchronize do
-      user_id = @sessions[token]
+      user_id = @sessions[Digest::SHA256::hexdigest(token)]
       return nil if user_id.nil?
 
       user = @users[user_id]

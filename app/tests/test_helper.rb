@@ -69,7 +69,7 @@ class AppTest < Minitest::Test
       products = json(get("/products", token: token))["products"]
       return products if products.size >= expected_count
       flunk "product was not created in time" if Time.now > deadline
-      sleep 0.05
+      sleep 0.5
     end
   end
 end

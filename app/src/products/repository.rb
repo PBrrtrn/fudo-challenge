@@ -7,16 +7,22 @@ class ProductsRepository
   end
 
   def push(name)
-    @data[@next_id] = { id: @next_id, name: name }
-    @next_id += 1
+    @mutex.synchronize do
+      @data[@next_id] = { id: @next_id, name: name }
+      @next_id += 1
+    end
   end
 
   def get(id)
-    @data[id]
+    @mutex.synchronize do
+      @data[id]
+    end
   end
   
   def get_all
-    @data.values
+    @mutex.synchronize do
+      @data.values
+    end
   end
 
 end
