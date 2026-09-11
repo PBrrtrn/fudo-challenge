@@ -15,7 +15,10 @@ GEM
     rack (3.2.7)
 
 PLATFORMS
+  aarch64-linux
+  ruby
   x64-mingw-ucrt
+  x86_64-linux
 
 DEPENDENCIES
   bcrypt (~> 3.1)
