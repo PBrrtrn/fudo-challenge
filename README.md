@@ -6,6 +6,16 @@ bundle install
 bundle exec puma -C .\config\puma.rb
 ```
 
+Para build de la imagen de Docker:
+```
+docker build -t fudo-challenge-app .
+```
+
+Para correr la imagen:
+```
+docker run -p 3000:3000 fudo-challenge-app
+```
+
 Para correr tests:
 ```
 bundle exec ruby tests/app_test.rb
