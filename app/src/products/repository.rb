@@ -3,6 +3,7 @@ class ProductsRepository
   def initialize
     @next_id = 0
     @data = {}
+    @mutex = Mutex.new
   end
 
   def push(name)

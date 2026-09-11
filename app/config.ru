@@ -4,6 +4,8 @@ require_relative "src/app"
 require_relative "src/router"
 require_relative "src/products/repository"
 require_relative "src/products/controller"
+require_relative "src/users/repository"
+require_relative "src/users/controller"
 
 use Rack::Reloader, 0
 use Rack::CommonLogger
@@ -11,6 +13,9 @@ use Rack::CommonLogger
 products_repository = ProductsRepository.new
 products_controller = ProductsController.new(products_repository)
 
-router = AppRouter.build(products_controller)
+users_repository = UsersRepository.new
+users_controller = UsersController.new(users_repository)
 
-run App.new(router)
+router = AppRouter.build(products_controller, users_controller)
+
+run App.new(router, users_repository)
