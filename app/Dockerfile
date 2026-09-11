@@ -16,8 +16,9 @@ WORKDIR /app
 # Install dependencies
 FROM base as dependencies_install
 COPY Gemfile Gemfile.lock ./
-RUN bundle config set --local deployment 'true' && \
+RUN bundle config set --local deployment true && \
     bundle config set --local without 'development test' && \
+    bundle config set --local path /usr/local/bundle && \
     bundle install --jobs 4 --retry 3
 
 
@@ -34,7 +35,8 @@ COPY config ./config
 COPY src ./src
 COPY config.ru ./
 
-ENV RACK_END=production \
+ENV RACK_ENV=production \
+    BUNDLE_PATH=/usr/local/bundle \
     BUNDLE_DEPLOYMENT=true \
     BUNDLE_WITHOUT=development:test \
     HOST=0.0.0.0 \
