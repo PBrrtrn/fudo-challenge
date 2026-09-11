@@ -32,18 +32,18 @@ class App
             serve_static_file STATIC_FILES[request.path_info]
         else
             unless PUBLIC_ENDPOINTS.include?(request.path_info)
-                auth_error = authorize(env)
+                auth_error = authorize env
                 return auth_error if auth_error
             end
 
-            @router.call(env)
+            @router.call env
         end
     end
         
     private
 
     def authorize(env)
-        token = session_token(env)
+        token = session_token env
         return json_response(401, {error: "Unauthorized"}) if token.nil? || token.empty?
 
         user = @users_repository.find_by_session_token(token)
