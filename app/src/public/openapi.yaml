@@ -1,0 +1,258 @@
+openapi: 3.0.3
+
+info:
+  title: Fudo Challenge API
+  description: API for managing products, developed as part of Fudo Challenge.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Local server
+
+paths:
+  /users:
+    post:
+      summary: Create a user
+      description: Creates a new user account.
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserCredentials'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredentials'
+      responses:
+        '201':
+          description: User created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: Missing username or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Validation error: User missing 'username' or 'password' field"
+        '409':
+          description: Username is already taken
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Username already taken"
+
+  /login:
+    post:
+      summary: Authenticate a user
+      description: Authenticates a user and returns a session token.
+      operationId: login
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/UserCredentials'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCredentials'
+      responses:
+        '200':
+          description: Authentication successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+              example:
+                session_token: "abc123"
+        '400':
+          description: Missing username or password
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Validation error: User missing 'username' or 'password' field"
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Invalid credentials"
+
+  /products:
+    post:
+      summary: Create a product
+      description: |
+        Starts asynchronous product creation. The product is added to the
+        repository after processing completes.
+      operationId: createProduct
+      requestBody:
+        required: true
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ProductCreate'
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProductCreate'
+      responses:
+        '202':
+          description: Product creation request accepted for processing
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProcessingResponse'
+              example:
+                response: "Processing"
+        '400':
+          description: Missing product name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Product missing 'name' field"
+
+    get:
+      summary: List all products
+      description: Returns all products in the repository.
+      operationId: listProducts
+      responses:
+        '200':
+          description: List of products
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductList'
+
+  /products/{id}:
+    get:
+      summary: Get a product
+      description: Returns a product by its ID.
+      operationId: getProduct
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: ID of the product
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Product found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProductResponse'
+        '404':
+          description: Product not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+              example:
+                error: "Product not found"
+
+components:
+  schemas:
+
+    UserCredentials:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          description: Username for the account
+          example: "john"
+        password:
+          type: string
+          format: password
+          description: Password for the account
+          example: "secret123"
+
+    User:
+      type: object
+      description: User returned after successful registration.
+      properties:
+        username:
+          type: string
+          example: "john"
+
+    LoginResponse:
+      type: object
+      required:
+        - session_token
+      properties:
+        session_token:
+          type: string
+          description: Session token used to authenticate the user
+          example: "abc123"
+
+    ProductCreate:
+      type: object
+      required:
+        - name
+      properties:
+        name:
+          type: string
+          description: Name of the product
+          example: "New Product"
+
+    Product:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: Unique product identifier
+          example: 1
+        name:
+          type: string
+          description: Product name
+          example: "New Product"
+
+    ProductResponse:
+      type: object
+      required:
+        - product
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+
+    ProductList:
+      type: object
+      required:
+        - products
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/Product'
+
+    ProcessingResponse:
+      type: object
+      required:
+        - response
+      properties:
+        response:
+          type: string
+          example: "Processing"
+
+    Error:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          example: "Product not found"
